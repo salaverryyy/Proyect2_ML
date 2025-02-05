@@ -15,7 +15,7 @@ print(train_df.head())
 print(val_df.head())
 print(test_df.head())
 
-#Como necesitamos cada nombre en cada linea como string incluido el .mp4 necesitamos renombrar y escribir los paths de forma de [,,,] en 3 text (para cada stage)
+#Como necesitamos cada nombre en cada linea como string incluido el .mp4 necesitamos renombrar y escribir los paths de forma de una linea un path en 3 text (uno para cada stage)
 def rename(directories: list[str]): 
 
     print("Iniciando el proceso de renombrado...\n")
