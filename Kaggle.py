@@ -79,6 +79,8 @@ video_paths_txt(test_df, test_directory, 'test')
 # git clone https://github.com/v-iashin/video_features.git
 # cd video_features
 
+#Se tuvo que instalar conda (https://www.anaconda.com/download/success)
+
 # conda create -n video_features
 # conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
 # conda install -c conda-forge omegaconf scipy tqdm pytest opencv
@@ -86,13 +88,10 @@ video_paths_txt(test_df, test_directory, 'test')
 
 
 
-# # extract r(2+1)d features for the sample videos
-# python main.py \
-#     feature_type=r21d \
-#     device="cuda:0" \
-#     video_paths="[./sample/v_ZNVhz7ctTq0.mp4, ./sample/v_GGSY1Qvo990.mp4]"
-# # if you have many GPUs, just run this command from another terminal with another device
-# # device can also be "cpu"
+# extract r(2+1)d features for the sample videos
+# python main.py feature_type="r21d" device="cuda:0" file_with_video_paths="../path_test.txt" on_extraction="save_numpy" output_path="../extraction/train"
 
-#video_paths seran nuestros txt, tambien se tuvo que instalar conda (https://www.anaconda.com/download/success)
+# python main.py feature_type="r21d" device="cuda:0" file_with_video_paths="../path_train.txt" on_extraction="save_numpy" output_path="../extraction/train"
+
+# python main.py feature_type="r21d" device="cuda:0" file_with_video_paths="../path_val.txt" on_extraction="save_numpy" output_path="../extraction/train"
 
