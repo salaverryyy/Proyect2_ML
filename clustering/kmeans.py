@@ -4,7 +4,7 @@ from sklearn.cluster import KMeans
 # Cargar datos reducidos
 features_2d = np.load("data/reduction/test_tsne_2d.npy")
 
-# Aplicar K-Means con un número de clusters K=5 (ajústalo según sea necesario)
+# Aplicar K-Means con un número de clusters K=5
 kmeans = KMeans(n_clusters=5, random_state=42, n_init=10)
 labels = kmeans.fit_predict(features_2d)
 
