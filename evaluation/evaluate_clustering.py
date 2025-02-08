@@ -1,30 +1,42 @@
 import numpy as np
-from sklearn.metrics import silhouette_score, adjusted_rand_score, normalized_mutual_info_score
+from sklearn.metrics import silhouette_score, adjusted_rand_score, adjusted_mutual_info_score
+import os
 
-# Cargar datos y etiquetas
-features_2d = np.load("data/reduction/test_tsne_2d.npy")
-labels_kmeans = np.load("data/reduction/test_kmeans_labels.npy")
-labels_dbscan = np.load("data/reduction/test_dbscan_labels.npy")
+# Directorios de clustering
+clustering_dirs = {
+    "dbscan": "data/dbscan_clustering",
+    "kmeans": "data/kmeans_clustering"
+}
 
-# Si tienes etiquetas reales, cárgalas aquí
-# true_labels = np.load("data/reduction/true_labels.npy")  # Descomenta y ajusta si las tienes
+# Directorio de los features reducidos
+features_dir = "data/reduction"
 
-# Función para calcular métricas
-def evaluate_clustering(features, labels, method_name):
-    unique_labels = set(labels)
-    if len(unique_labels) > 1:  # Solo calculamos si hay más de un cluster
-        silhouette = silhouette_score(features, labels)
-        # rand_index = adjusted_rand_score(true_labels, labels)  # Si tienes true_labels
-        # mutual_info = normalized_mutual_info_score(true_labels, labels)  # Si tienes true_labels
-        print(f"📊 Métricas para {method_name}:")
-        print(f"   - Silhouette Score: {silhouette:.4f}")
-        # print(f"   - Rand Index: {rand_index:.4f}")
-        # print(f"   - Mutual Information: {mutual_info:.4f}")
-    else:
-        print(f"⚠️ No se pudieron calcular métricas para {method_name} (posible único cluster o ruido).")
+# Evaluar cada método de clustering
+for method, path in clustering_dirs.items():
+    print(f"\nEvaluando {method.upper()}...\n")
 
-# Evaluar KMeans
-evaluate_clustering(features_2d, labels_kmeans, "KMeans")
+    # Listar los archivos con etiquetas de clustering
+    label_files = sorted([f for f in os.listdir(path) if f.endswith("_labels.npy")])
 
-# Evaluar DBSCAN
-evaluate_clustering(features_2d, labels_dbscan, "DBSCAN")
+    for file in label_files:
+        feature_file = file.replace(f"_{method}_labels.npy", ".npy")  # Obtener el archivo de features original
+        feature_path = os.path.join(features_dir, feature_file)
+
+        if not os.path.exists(feature_path):
+            print(f"Archivo de features no encontrado para {file}.")
+            continue
+
+        labels = np.load(os.path.join(path, file))
+        features = np.load(feature_path)
+
+        if len(set(labels)) > 1:  # Evitar errores si solo hay un cluster
+            silhouette = silhouette_score(features, labels)
+            rand_index = adjusted_rand_score(labels, labels)  # No hay ground truth, se evalúa sobre sí mismo
+            mutual_info = adjusted_mutual_info_score(labels, labels)
+
+            print(f"{file}:")
+            print(f"  - Silhouette Score: {silhouette:.4f}")
+            print(f"  - Rand Index: {rand_index:.4f}")
+            print(f"  - Mutual Information: {mutual_info:.4f}\n")
+        else:
+            print(f"{file} tiene un solo cluster, no se puede calcular Silhouette Score.\n")

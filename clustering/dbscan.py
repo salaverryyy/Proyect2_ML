@@ -17,8 +17,8 @@ datasets = [
 ]
 
 # Parámetros para DBSCAN
-EPS = 5  # Radio de vecindad
-MIN_SAMPLES = 5  # Cantidad mínima de vecinos
+EPS = 2  # Radio de vecindad , Mejor hiperparamtro
+MIN_SAMPLES = 3  # Cantidad mínima de vecinos, Mejor hiperpametro hallado en encontrar_mejores__hiperparametros_dbscan.py
 
 for file in datasets:
     print(f"🔹 Procesando clustering con DBSCAN para {file}...")
