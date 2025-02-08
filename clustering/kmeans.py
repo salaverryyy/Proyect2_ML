@@ -2,7 +2,6 @@ import numpy as np
 import os
 from sklearn.cluster import KMeans
 
-# Directorio donde están los archivos reducidos
 input_path = "data/reduction"
 output_path = "data/reduction"
 
