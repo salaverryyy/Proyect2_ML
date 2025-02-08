@@ -9,7 +9,7 @@ clustering_dirs = {
     "kmeans": "data/kmeans_clustering"
 }
 features_dir = "data/reduction"
-labels_dir = "etiquetas_reales"
+labels_dir = "etiquetas_Reales"
 video_id_files = {  # Archivos que contienen los IDs usados en clustering
     "train": "data/r2plus1d_18_16_kinetics_train/path_train.txt",
     "val": "data/r2plus1d_18_16_kinetics_val/path_val.txt"
