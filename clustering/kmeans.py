@@ -1,14 +1,42 @@
 import numpy as np
+import os
 from sklearn.cluster import KMeans
 
-# Cargar datos reducidos
-features_2d = np.load("data/reduction/test_tsne_2d.npy")
+# Directorio donde están los archivos reducidos
+input_path = "data/reduction"
+output_path = "data/reduction"
 
-# Aplicar K-Means con un número de clusters K=5
-kmeans = KMeans(n_clusters=5, random_state=42, n_init=10)
-labels = kmeans.fit_predict(features_2d)
+# Listado de archivos que contienen datos reducidos
+datasets = [
+    "test_pca_2d.npy", "test_pca_3d.npy",
+    "train_pca_2d.npy", "train_pca_3d.npy",
+    "val_pca_2d.npy", "val_pca_3d.npy",
+    "test_tsne_2d.npy", "test_tsne_3d.npy",
+    "train_tsne_2d.npy", "train_tsne_3d.npy",
+    "val_tsne_2d.npy", "val_tsne_3d.npy"
+]
 
-# Guardar etiquetas
-np.save("data/reduction/test_kmeans_labels.npy", labels)
+# Número de clusters para K-Means
+K = 5
 
-print("✅ Clustering con K-Means completado y guardado.")
+for file in datasets:
+    print(f"🔹 Procesando clustering con K-Means para {file}...")
+    
+    # Cargar los datos reducidos
+    features = np.load(os.path.join(input_path, file))
+
+    # Aplicar K-Means
+    kmeans = KMeans(n_clusters=K, random_state=42, n_init=10)
+    labels = kmeans.fit_predict(features)
+
+    # Guardar las etiquetas
+    output_file = file.replace(".npy", "_kmeans_labels.npy")
+    np.save(os.path.join(output_path, output_file), labels)
+
+    print(f" Clustering con K-Means completado para {file}. Guardado en {output_file}")
+
+print(" Proceso de clustering con K-Means finalizado.")
+
+'''
+K-Means se usa porque es un método particional que asume que los clusters tienen una forma esférica, lo cual es ideal cuando los datos son compactos y balanceados.
+'''
